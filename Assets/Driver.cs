@@ -7,6 +7,9 @@ public class Driver : MonoBehaviour
     // 加上 SerializeField attr 可以在编辑器里面动态调整 property 的值
     [SerializeField] float steerSpeed = 300f;
     [SerializeField] float moveSpeed = 20f;
+    [SerializeField] float slowSpeed = 15f;
+    [SerializeField] float boostSpeed = 25f;
+
 
     // Start is called before the first frame update
     void Start()
@@ -21,5 +24,19 @@ public class Driver : MonoBehaviour
         float moveAmount = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
         transform.Rotate(0, 0, -steerAmount);
         transform.Translate(0, moveAmount, 0);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) 
+    {
+        if (other.tag == "Boost")
+        {
+            Debug.Log("boost car");
+            moveSpeed = boostSpeed;
+        }
+
+        if (other.tag == "Bump")
+        {
+            moveSpeed = slowSpeed;
+        }
     }
 }
